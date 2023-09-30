@@ -16,7 +16,9 @@ xPos, yPos = TUK_WIDTH // 2, TUK_HEIGHT // 2
 
 frame = 0
 
-prevframe = True
+HandPos = [random.randint(100, TUK_WIDTH - 100), random.randint(100, TUK_HEIGHT - 100)]
+
+prevframe = False
 
 def handle_events():
 
@@ -35,9 +37,12 @@ def draw_hand_arrow(hand):
 while moving:
     clear_canvas()
     tuk_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
+    if abs(HandPos[0] - xPos) < 0.9 and abs(HandPos[1] == yPos) < 0.9:
+        is_arrive = True
     if is_arrive:
         HandPos = [random.randint(100, TUK_WIDTH - 100), random.randint(100, TUK_HEIGHT - 100)]
         is_arrive = False
+    hand_arrow.draw(HandPos[0], HandPos[1])
     if HandPos[0] > xPos:
         if prevframe:
             prevframe = False
@@ -50,7 +55,11 @@ while moving:
             frame = 0
         character.clip_draw(frame % 8 * 100, 0, 100, 100, xPos, yPos)
 
-    draw_hand_arrow(HandPos)
+
+    t = 0.13
+
+    xPos = (1-t) * xPos + t * HandPos[0]
+    yPos = (1-t) * yPos + t * HandPos[1]
 
     frame += 1
 
